@@ -1,0 +1,40 @@
+{
+  "name": "HomeSense",
+  "version": "1.0.0",
+  "description": "Home monitoring system powered by your Raspberry Pi",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jorgep19/homesense.git"
+  },
+  "keywords": [
+    "HomeSense",
+    "Raspberry Pi",
+    "Home monitoring",
+    "Temperature",
+    "Motion Sensor"
+  ],
+  "author": "jorge paez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jorgep19/homesense/issues"
+  },
+  "dependencies": {
+    "express": "~3.4.8",
+    "static-favicon": "~1.0.0",
+    "morgan": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "body-parser": "~1.0.0",
+    "debug": "~0.7.4",
+    "jade": "~1.3.0",
+    "logfmt": "^1.1.2",
+    "pg": "^3.0.1"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
