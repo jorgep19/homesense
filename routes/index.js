@@ -1,19 +1,30 @@
 var app = require('../app.js'),
-    pg = require('pg');
+    sensorController = require('./controller/SensorController.js'),
+    userController = require('./controller/UserController.js');
+
+
+var checkSessionBeforeExec = function(requestHandler) {
+
+    return function(req, res) {
+
+        console.log(req.session);
+        if(!req.session.userID)
+        {
+            console.log('no session');
+            res.send('You must login first');
+        } else {
+            console.log('going to the handler');
+            requestHandler(req, res);
+        }
+    };
+};
 
 app.get('/', function(req, res){
     res.render('index', { title: 'Express' });
 });
 
-app.get('/dbtest', function(req, res){
+app.get('/login/:userCode', userController.login);
 
-    pg.connect( process.env.DATABASE_URL, function(err, client, done) {
-        client.query('SELECT * FROM sensor_type;', function(err, result) {
-            done();
+app.get('/logout', checkSessionBeforeExec(userController.logout) );
 
-            if(err) return console.error(err);
-
-            res.json(result.rows);
-        });
-    });
-});
+app.get('/dbtest', checkSessionBeforeExec(sensorController.getSensorTypes) );
