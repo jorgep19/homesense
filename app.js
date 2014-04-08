@@ -1,5 +1,6 @@
 var express = require('express'),
-    http = require('http');
+    http = require('http'),
+    cors = require('cors');
 
 var app = express();
 
@@ -8,6 +9,10 @@ app.configure(function() {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
 
+    app.use(express.bodyParser());
+    app.use(express.cookieParser());
+    app.use(express.session( { secret: 'HomeSenseCode..shhh'} ));
+    app.use(cors());
     app.use(app.router);
     app.use(express.static(__dirname + '/public' ) );
 
