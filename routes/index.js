@@ -7,13 +7,9 @@ var checkSessionBeforeExec = function(requestHandler) {
 
     return function(req, res) {
 
-        console.log(req.session);
-        if(!req.session.userCode)
-        {
-            console.log('no session');
+        if(!req.session.userCode) {
             res.send('You must login first');
         } else {
-            console.log('going to the handler');
             requestHandler(req, res);
         }
     };
@@ -30,10 +26,10 @@ app.get('/dbtest', checkSessionBeforeExec(sensorController.getSensorTypes) );
 // TODO implement app.post('/api/pi/put/data', );
 
 // CLIENTS ROUTES
-app.post('/api/customer/register', userController.registerUser);            // basic support
-app.post('/api/login/', userController.login);                              // basic support
-app.post('/api/logout', checkSessionBeforeExec(userController.logout) );
+app.post('/api/customer/register', userController.registerUser);                        // basic support
+app.post('/api/login/', userController.login);                                          // basic support
+app.post('/api/logout', checkSessionBeforeExec(userController.logout) );                // basic support
+app.post('/api/customer/genpicode', checkSessionBeforeExec(userController.genPiCode) );
 // TODO implement app.get('/api/customer/get/summary/data', );
 // TODO implement app.get('/api/sensor/get/types', );
 // TODO implement app.get('/api/get/temperature/data', );
-// TODO implement app.get('/api/customer/genpicode', );

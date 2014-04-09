@@ -3,7 +3,7 @@ var constructor = function() {
     var pg = require('pg');
     var customerDataAccessorInstance = {};
 
-    customerDataAccessorInstance.authenticateCustomer = function authenticate(data, res, finishAuth) {
+    customerDataAccessorInstance.authenticateUser = function(data, res, finishAuth) {
 
         var queryTemplate = "SELECT * FROM customer WHERE cusEmail = $1 AND cusPassword = $2";
         var inserts = [ data.email, data.password ];
@@ -12,15 +12,12 @@ var constructor = function() {
             client.query(queryTemplate, inserts, function(err, result) {
                 done();
 
-                console.log('found user for ' + data.email);
-                console.log(result.rows);
-
                 finishAuth(err, result.rows);
             });
         });
     };
 
-    customerDataAccessorInstance.insertUserToDb = function(data, response, sendResponse) {
+    customerDataAccessorInstance.registerUser = function(data, response, sendResponse) {
 
         var queryTemplate = "INSERT INTO customer " +
             "(cusFirst, cusLast, cusEmail, cusPassword) " +
@@ -33,7 +30,30 @@ var constructor = function() {
             client.query(queryTemplate, inserts, function(err, result) {
                 done();
 
-                sendResponse(err, response, result);
+                sendResponse(err);
+            });
+        });
+    };
+
+    customerDataAccessorInstance.registerPi = function(data, userCode, sendResponse){
+        var queryTemplate = 'INSERT INTO device (cusId, devDesc) ' +
+            'VALUES' +
+            '($1, $2)';
+        var inserts = [userCode, data.piDesc ];
+
+
+        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+            client.query(queryTemplate, inserts, function(err, result) {
+                done();
+
+                if(err) {
+                    sendResponse(err, result.devDesc);
+                }
+                else
+                {
+                    console.log('inserted devID: ' + data.piDesc);
+                    sendResponse(undefined, data.piDesc);
+                }
             });
         });
     };
