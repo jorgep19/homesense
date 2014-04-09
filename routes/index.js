@@ -31,7 +31,7 @@ app.post('/api/customer/register', userController.registerUser);                
 app.post('/api/login/', userController.login);                                          // basic support
 app.post('/api/logout', checkSessionBeforeExec(userController.logout) );                // basic support
 app.post('/api/customer/genpicode', checkSessionBeforeExec(userController.genPiCode) ); // basic support
-// TODO implement app.get('/api/sensor/get/types', );
+app.get('/api/sensor/get/types', sensorController.getSensorTypes);
 
 // TODO implement app.get('/api/customer/get/summary/data', );
 // TODO implement app.get('/api/get/temperature/data', );

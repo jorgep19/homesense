@@ -1,21 +1,20 @@
-var pg = require('pg');
-
 var constructor = function() {
 
     var sensorControllerInstance = {};
+    var sensorDA = require('../dataAccessors/SensorDataAccessor.js');
 
-    sensorControllerInstance.getSensorTypes = function(req, res){
+    // gets all the supported sensor types
+    sensorControllerInstance.getSensorTypes = function(req, res) {
 
-        pg.connect( process.env.DATABASE_URL, function(err, client, done) {
-            client.query('SELECT * FROM sensor_type;', function(err, result) {
-                done();
-
-                if(err) return console.error(err);
-
-                res.json(result.rows);
-            });
+        sensorDA.getSensorTypes(function(err, rows) {
+            if(err) {
+                // TODO check for any other errors
+                res.send('Something went wrong');
+            } else {
+                res.json(rows);
+            }
         });
-    }
+    };
 
     return sensorControllerInstance;
 };
