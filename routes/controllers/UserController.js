@@ -80,14 +80,7 @@ var constructor = function() {
             userDA.authenticateCustomer(data, res, function(err, rows){
 
                 if (rows.length != 0) {
-                    console.log(rows[0].cusid);
-
-                    req.session.regenerate(function(){
-                        console.log(rows[0].cusid);
-                        req.session.userCode = rows[0].cusid;
-                    });
-
-                    console.log(req.session);
+                    req.session.userCode = rows[0].cusid;
                     response.hasErrors = false;
                     response.messages.push("Logged in as " + data.email);
                 } else {
@@ -103,7 +96,7 @@ var constructor = function() {
     };
 
     userControllerInstance.logout = function(req, res){
-        delete req.session.userID;
+        delete req.session.userCode;
 
         res.send( { hasErrors: false, messages: ['successfully logged out'] });
     };
