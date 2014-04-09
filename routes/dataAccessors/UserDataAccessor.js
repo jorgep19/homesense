@@ -3,6 +3,7 @@ var constructor = function() {
     var pg = require('pg');
     var customerDataAccessorInstance = {};
 
+    // validates the credential of a user based on the database
     customerDataAccessorInstance.authenticateUser = function(data, res, finishAuth) {
 
         var queryTemplate = "SELECT * FROM customer WHERE cusEmail = $1 AND cusPassword = $2";
@@ -17,6 +18,7 @@ var constructor = function() {
         });
     };
 
+    // insert a user row without user data
     customerDataAccessorInstance.registerUser = function(data, response, sendResponse) {
 
         var queryTemplate = "INSERT INTO customer " +
@@ -35,6 +37,7 @@ var constructor = function() {
         });
     };
 
+    // Inserst a Pi for a user account
     customerDataAccessorInstance.registerPi = function(data, userCode, sendResponse){
         var queryTemplate = 'INSERT INTO device (cusId, devDesc) ' +
             'VALUES' +
@@ -48,10 +51,8 @@ var constructor = function() {
 
                 if(err) {
                     sendResponse(err, result.devDesc);
-                }
-                else
-                {
-                    console.log('inserted devID: ' + data.piDesc);
+                } else {
+                    // TODO try to retrieve data from the result of the query
                     sendResponse(undefined, data.piDesc);
                 }
             });

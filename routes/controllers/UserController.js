@@ -1,7 +1,7 @@
 var constructor = function() {
 
     var userControllerInstance = {};
-    var userDA = require('../dataAccessors/UserDataAccessor.js')
+    var userDA = require('../dataAccessors/UserDataAccessor.js');
 
     // Creates the user account
     userControllerInstance.registerUser = function (req, res) {
