@@ -1,0 +1,42 @@
+!!! 5
+html
+  head
+    meta(charset='utf-8')
+    title HomeSense
+    script(src='../lib/js/jquery.min.js')
+    script(src='../lib/js/bootstrap.min.js')
+    link(rel='stylesheet', href='../lib/css/bootstrap.min.css')
+    link(rel='stylesheet', href='../lib/css/font-awesome.css')
+    link(rel='stylesheet', href='../lib/css/bootstrap-social.css')
+    link(rel='stylesheet', href='../styles/common.css')
+  body
+    main.container
+      header.bottom-border
+        a(href='../index.html')
+          img(src='../imgs/bannerLogo.png')
+        h1
+      article.jumbotron.col-md-12
+        section.col-md-6
+          div
+            h2.form-signin-heading Create an account
+            input.form-control(type='email', placeholder='Email address', required='', data-bind='value: email')
+            input.form-control(type='password', placeholder='Password', required='', data-bind='value: password')
+            input.form-control(type='password', placeholder='re-type Password', required='', data-bind='value: passwordRetype')
+            label
+            button.btn.btn-lg.btn-primary.btn-block(data-bind='click: createAccount') Create account
+          .alert.alert-success(data-bind='visible: successFeedback')
+            span Account successfully created
+        section.col-md-6
+          form.form-signin(role='form')
+            h2.form-signin-heading Or login with
+            a.btn.btn-block.btn-social.btn-lg.btn-google-plus
+              i.fa.fa-google-plus
+              | Sign in with Google
+            a.btn.btn-block.btn-social.btn-lg.btn-facebook
+              i.fa.fa-facebook
+              | Sign in with Facebook
+      footer
+        | © HomeSense 2014
+    script(src='../lib/js/knockout-3.js')
+    script(src='../clientLogic/registrationVM.js')
+

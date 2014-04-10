@@ -36,10 +36,10 @@ var constructor = function() {
                     response.messages.push("Account for " + data.email + "successfully created");
                 }
 
-                res.send(response);
+                res.json(response);
             });
         } else {
-            res.send(response);
+            res.json(response);
         }
     };
 
@@ -75,10 +75,10 @@ var constructor = function() {
                     response.messages.push("Didn't find account for " + data.email);
                 }
 
-                res.send(response);
+                res.json(response);
             });
         } else {
-            res.send(response);
+            res.json(response);
         }
     };
 
@@ -86,7 +86,7 @@ var constructor = function() {
     userControllerInstance.logout = function(req, res){
         delete req.session.userCode;
 
-        res.send( { hasErrors: false, messages: ['successfully logged out'] });
+        res.json( { hasErrors: false, messages: ['successfully logged out'] });
     };
 
     // Adds an unverified pi to the user logged in.
@@ -96,9 +96,9 @@ var constructor = function() {
 
         userDA.registerPi(req.body, req.session.userCode, function(err, piDesc) {
             if(err) {
-                res.send( { hasErrors: true, messages: "couldn't register PI" + piDesc } );
+                res.json( { hasErrors: true, messages: "couldn't register PI" + piDesc } );
             } else {
-                res.send( { hasErrors: false, piDesc: piDesc } );
+                res.json( { hasErrors: false, piDesc: piDesc } );
             }
         })
     }
