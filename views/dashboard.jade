@@ -1,18 +1,10 @@
+include userMenuMixin
 extends layout
 
 block headerContent
     // logged in user menu
-    article.dropdown.navbar-right
-        button.dropdown-toggle.btn.btn-default(data-toggle='dropdown')
-            img(src='/imgs/defaultUserImg.png')
-            b.caret
-        ul.dropdown-menu
-            li
-                a(href='#') Dashboard
-            li
-                a(href='#') Settings
-            li
-                a(href='/signout') Sign out
+    +userMenuMixin(null)
+
 block mainContent
     article.jumbotron.col-md-12
         // user sensors data
@@ -38,7 +30,7 @@ block mainContent
                     button.btn.btn-default.pull-right
                         i.fa.fa-refresh
                         label Sync
-            section.col-md-12
+
                 h3 Filters:
 
                     // Pi filters

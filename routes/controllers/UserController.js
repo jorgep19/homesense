@@ -85,7 +85,7 @@ var constructor = function() {
 
     // Ends the session for a given user
     userControllerInstance.logout = function(req, res){
-        delete req.session.userCode;
+        delete req.session.userId;
 
         res.json( { hasErrors: false, messages: ['successfully logged out'] });
     };

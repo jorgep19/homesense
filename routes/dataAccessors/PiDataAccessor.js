@@ -41,13 +41,12 @@ var constructor = function() {
         });
     };
 
-    piDataAccessorIntance.getSensorUpdate = function(piCode, sendResponse){
-        var queryTemplate = 'SELECT sensid, stypeid, sensdesc FROM sensor WHERE devid = $1';
-        var inserts = [piCode];
-
-        console.log
+    piDataAccessorIntance.getSensorUpdate = function(data, sendResponse){
 
         pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+            var queryTemplate = 'SELECT sensid, stypeid, sensdesc FROM sensor WHERE devid = $1 AND cusid = $2';
+            var inserts = [data.piId, data.userId];
+
             client.query(queryTemplate, inserts, function(err, result) {
                 done();
 

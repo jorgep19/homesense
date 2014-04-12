@@ -51,8 +51,14 @@ var constructor = function() {
             response.messages.push("Pi Code is required");
         }
 
+        if(data.userId && data.userId.length === 0)
+        {
+            response.hasErrors = true;
+            response.messages.push("Pi Code is required");
+        }
+
         if(!response.hasErrors) {
-            piDA.getSensorUpdate(data.piCode, function(err, data) {
+            piDA.getSensorUpdate(data, function(err, data) {
                 if(err) {
                     response.hasErrors = true;
                     response.messages.push('Something went wrong');

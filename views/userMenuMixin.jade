@@ -1,0 +1,13 @@
+// you can create mixin which are template that you can call using parameters
+mixin userMenuMixin(user)
+    article.dropdown.navbar-right
+        button.dropdown-toggle.btn.btn-default(data-toggle='dropdown')
+            img(src='/imgs/defaultUserImg.png')
+            b.caret
+        ul.dropdown-menu
+            li
+                a(href='/dashboard') Dashboard
+            li
+                a(href='/settings') Settings
+            li
+                a(href='/logout') Sign out

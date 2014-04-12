@@ -30,7 +30,9 @@ module.exports = function(app) {
     app.post('/signup', webRequestController.signupUser);
 
     // dashboard
-    app.get('/dashboard', webRequestController.loadDashboard);
+    app.get('/dashboard', checkSessionBeforeExec(webRequestController.loadDashboard) );
+    // logout
+    app.get('/logout', checkSessionBeforeExec(webRequestController.logout));
 
     // PI API ROUTES
     // -------------------------------------------------------------------------------------
@@ -49,9 +51,9 @@ module.exports = function(app) {
 
 
     // This URL provides an update for the pi sensors
-    // Expects a JSON of this form: { piId: 21 }
+    // Expects a JSON of this form: { piId: 21, userId: 19 }
     // Returns a JSON of this form: { hasErrors: false, messages: [], sensors: [ { sensid: 1, stypeid: 1, sensdesc: "Garage_Temp" }, { sensid: 1, stypeid: 1, sensdesc: "Garage_Temp" } ]
-    app.post('/api/pi/update',  piController.getSensorUpdate);
+    app.post('/api/pi/update',  piController.getSensorUpdate);                             //  basic support
 
     // CLIENTS API ROUTES
     // -------------------------------------------------------------------------------------
