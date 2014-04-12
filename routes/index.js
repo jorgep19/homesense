@@ -23,6 +23,7 @@ module.exports = function(app) {
 
     // home page
     app.get('/', webRequestController.loadHomePage);
+    app.post('/login', webRequestController.login);
 
     // signup page
     app.get('/signup', webRequestController.loadSignup);
@@ -68,7 +69,7 @@ module.exports = function(app) {
     // in that JSON hasErrors is a boolean that states if there was an error
     // and messages is an array of string that has either error messages
     // or a message saying that the operation was successful
-    app.post('/api/login/', userController.login);                                          // basic support
+    app.post('/api/login', apiRequestController.login);                                          // basic support
 
     // This URL ends the session of a user
     // Expects nothing

@@ -8,8 +8,15 @@ var constructor = function() {
     ApiRequestControllerInstance.registerUser = function(req, res){
         var result = { hasErrors: false, messages: [] };
 
-        userController.signupUser(req.body, result, function(responseResult){
+        userController.signupUser(req.body, result, function(responseResult) {
+            res.json(responseResult);
+        });
+    };
 
+    ApiRequestControllerInstance.login = function(req, res) {
+        var result = { hasErrors: false, messages: [] };
+
+        userController.login(req.body, result, function(responseResult){
             res.json(responseResult);
         });
     };

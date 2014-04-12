@@ -4,7 +4,7 @@ var constructor = function() {
     var customerDataAccessorInstance = {};
 
     // validates the credential of a user based on the database
-    customerDataAccessorInstance.authenticateUser = function(data, res, finishAuth) {
+    customerDataAccessorInstance.authenticateUser = function(data, finishAuth) {
 
         var queryTemplate = "SELECT * FROM customer WHERE cusEmail = $1 AND cusPassword = $2";
         var inserts = [ data.email, data.password ];

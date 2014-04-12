@@ -48,43 +48,38 @@ var constructor = function() {
     };
 
     // Starts the session for given user
-    userControllerInstance.login = function(req, res){
-        var response = { hasErrors: false, messages: [] };
-        var data = req.body;
-        console.log(data);
-
+    userControllerInstance.login = function(data, result, responseHandler){
         // TODO fully implement this validations
         if(data.email.length === 0)
         {
-            response.hasErrors = true;
-            response.messages.push("Email is required");
+            result.hasErrors = true;
+            result.messages.push("Email is required");
         }
 
         // TODO fully implement this validations
         if(data.password.length === 0)
         {
-            response.hasErrors = true;
-            response.messages.push("Password is required");
+            result.hasErrors = true;
+            result.messages.push("Password is required");
         }
 
-        if(!response.hasErrors) {
+        if(!result.hasErrors) {
 
-            userDA.authenticateUser(data, res, function(err, rows){
+            userDA.authenticateUser(data, function(err, rows){
 
                 if (rows.length != 0) {
-                    req.session.userCode = rows[0].cusid;
-                    response.hasErrors = false;
-                    response.messages.push("Logged in as " + data.email);
-                    res.redirect('/foo/bar');
+                    result.userId = rows[0].cusid;
+                    result.hasErrors = false;
+                    result.messages.push("Logged in as " + data.email);
                 } else {
-                    response.hasErrors = true;
-                    response.messages.push("Didn't find account for " + data.email);
+                    result.hasErrors = true;
+                    result.messages.push("Didn't find account for " + data.email);
                 }
 
-                res.json(response);
+                responseHandler(result);
             });
         } else {
-            res.json(response);
+            responseHandler(result);
         }
     };
 

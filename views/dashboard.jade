@@ -1,74 +1,66 @@
-doctype html
-html
-  head
-    meta(charset='utf-8')
-    title HomeSense
-    script(src='./lib/js/jquery.min.js')
-    script(src='./lib/js/bootstrap.min.js')
-    link(rel='stylesheet', href='./lib/css/bootstrap.min.css')
-    link(rel='stylesheet', href='./lib/css/font-awesome.css')
-    link(rel='stylesheet', href='./styles/common.css')
-  body
-    main.container
-      header.bottom-border
-        a(href='./index.html')
-          img(src='./imgs/bannerLogo.png')
-        article.dropdown.navbar-right
-          button.dropdown-toggle.btn.btn-default(data-toggle='dropdown')
-            img(src='./imgs/defaultUserImg.png')
+extends layout
+
+block headerContent
+    // logged in user menu
+    article.dropdown.navbar-right
+        button.dropdown-toggle.btn.btn-default(data-toggle='dropdown')
+            img(src='/imgs/defaultUserImg.png')
             b.caret
-          ul.dropdown-menu
+        ul.dropdown-menu
             li
-              a(href='#') Dashboard
+                a(href='#') Dashboard
             li
-              a(href='#') Settings
+                a(href='#') Settings
             li
-              a(href='../index.html') Sign out
-      article.jumbotron.col-md-12
+                a(href='/signout') Sign out
+block mainContent
+    article.jumbotron.col-md-12
+        // user sensors data
         section.col-md-10
-          a(href='TemperatureDetail.html')
-            button.btn.btn-default
-              h3
-                label.label.label-default
-                  span SensorName
-                  span 72
-              h6
-                | Outside Temp:
-                span 80
+            a(href='TemperatureDetail.html')
+                button.btn.btn-default
+                    h3
+                        label.label.label-default
+                    span SensorName
+                    span 72
+                    h6
+                        | Outside Temp:
+                    span 80
+
         section.col-md-2
-          a(href='PiManagement.html')
-            button.btn.btn-default.pull-right(data-bind='click: addPi')
-              label Add a Pi
-        section.col-md-2
-          button.btn.btn-default.pull-right
-            i.fa.fa-refresh
-            label Sync
-          section.col-md-12
-            h3 Filters:
-            label.col-md-12.label.label-default Pi
-            .checkbox
-            div
-              .checkbox
-                label
-                  input(type='checkbox')
-                  | My Pi
-            label.col-md-12.label.label-default Sensor Type
-            .checkbox
-            div
-              .checkbox
-                label
-                  input(type='checkbox')
-                  | Temperature
-              .checkbox
-                label
-                  input(type='checkbox')
-                  | Humidity
-              .checkbox
-                label
-                  input(type='checkbox')
-                  | Motion
-      footer
-        | © HomeSense 2014
-    script(src='./lib/js/knockout-3.js')
-    script(src='./clientLogic/dashboardVM.js')
+            section.col-md-12
+                // add a pi button
+                a(href='/')
+                    button.btn.btn-default.pull-right
+                        label Add a Pi
+                // sync button
+                a(href='/dashboard')
+                    button.btn.btn-default.pull-right
+                        i.fa.fa-refresh
+                        label Sync
+            section.col-md-12
+                h3 Filters:
+
+                    // Pi filters
+                label.col-md-12.label.label-default Pi
+                div
+                    .checkbox
+                        input(type='checkbox')
+                        | My Pi
+
+                // sensor types filters
+                label.col-md-12.label.label-default Sensor Type
+                div
+                    .checkbox
+                        label Temperature
+                        input(type='checkbox')
+                    .checkbox
+                        label Humidity
+                        input(type='checkbox')
+                    .checkbox
+                        label Motion
+                        input(type='checkbox')
+
+block scripts
+    script(src='/clientLogic/dashboardVM.js')
 
