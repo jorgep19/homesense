@@ -47,6 +47,7 @@ var constructor = function() {
     userControllerInstance.login = function(req, res){
         var response = { hasErrors: false, messages: [] };
         var data = req.body;
+        console.log(data);
 
         // TODO fully implement this validations
         if(data.email.length === 0)
@@ -70,6 +71,7 @@ var constructor = function() {
                     req.session.userCode = rows[0].cusid;
                     response.hasErrors = false;
                     response.messages.push("Logged in as " + data.email);
+                    res.render('dashboard');
                 } else {
                     response.hasErrors = true;
                     response.messages.push("Didn't find account for " + data.email);

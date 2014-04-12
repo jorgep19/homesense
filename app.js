@@ -19,6 +19,7 @@ app.configure(function() {
 
     // this will be the 404 middle ware because is at the end when nothing matches the url
     app.use(function (req, res) {
+        console.log(req.url);
         res.send(404, 'nope.... 404')
     });
 });

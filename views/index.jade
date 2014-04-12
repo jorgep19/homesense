@@ -1,5 +1,47 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
+block headerContent
+    // login form
+    .navbar-form.navbar-right
+        form(method='POST', action='/api/login/')
+            .form-group
+                input(type='email', placeholder='email', name='email', required='')
+            .form-group
+                input(type='password', placeholder='password', name='password', required='')
+            button.btn.btn-default(type="submit") Login
+
+block mainContent
+    article.jumbotron.col-md-12
+        // intro
+        article.col-md-5
+            h1 Welcome!
+            p
+                | HomeSense is a simple and powerful system that allows you to monitor your home by placing a
+                | Raspberry Pi with sensors connected at the location you want to keep an eye on, and checking
+                | readings on your browser or Android device.
+            a(href='/signup')
+                button.btn.btn-lg.btn-default(role='button') Sign Up
+        // slideshow
+        article.col-md-7
+            #features-sideshow.carousel.slide(data-ride='carousel')
+                // slideshow indicators
+                ol.carousel-indicators
+                    li.active(data-target='#features-sideshow', data-slide-to='0')
+                    li(data-target='#features-sideshow', data-slide-to='1')
+                    li(data-target='#features-sideshow', data-slide-to='2')
+                // wrapper for slides
+                .carousel-inner
+                    .item.active
+                        img(src='/imgs/temperatureSlide.png', alt='Monitor Temperature')
+                    .item
+                        img(src='/imgs/humiditySlide.png', alt='Track Humidity')
+                    .item
+                        img(src='/imgs/motionSlide.png', alt='Sense Motion')
+                // slide show controls
+                a.left.carousel-control(href='#features-sideshow', data-slide='prev')
+                    span.glyphicon.glyphicon-chevron-left
+                a.right.carousel-control(href='#features-sideshow', data-slide='next')
+                    span.glyphicon.glyphicon-chevron-right
+
+block scripts
+    script(src='/clientLogic/HomePageVM.js')

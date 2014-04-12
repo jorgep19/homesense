@@ -1,7 +1,27 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    head
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        meta(charset='utf-8')
+        title HomeSense
+        link(rel='stylesheet', href='/lib/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/stylesheets/common.css')
+        block head
+    body
+        main.container
+            header.bottom-border
+                .container-fluid
+                    .navbar-header
+                        a(href='#')
+                            img(src='/imgs/bannerLogo.png')
+                    block headerContent
+
+            block mainContent
+
+            footer
+                | © HomeSense 2014
+
+        script(src='/lib/js/jquery.min.js')
+        script(src='/lib/js/bootstrap.min.js')
+        script(src='/lib/js/knockout-3.js')
+        block scripts
