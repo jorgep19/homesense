@@ -7,13 +7,13 @@
 6 info start HomeSense@1.0.0
 7 verbose unsafe-perm in lifecycle true
 8 info HomeSense@1.0.0 Failed to exec start script
-9 error HomeSense@1.0.0 start: `node routes/index.js`
+9 error HomeSense@1.0.0 start: `node app.js`
 9 error Exit status 8
 10 error Failed at the HomeSense@1.0.0 start script.
 10 error This is most likely a problem with the HomeSense package,
 10 error not with npm itself.
 10 error Tell the author that this fails on your system:
-10 error     node routes/index.js
+10 error     node app.js
 10 error You can get their info via:
 10 error     npm owner ls HomeSense
 10 error There is likely additional logging output above.

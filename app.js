@@ -1,6 +1,8 @@
 var express = require('express'),
     http = require('http'),
-    cors = require('cors');
+    cors = require('cors'),
+    flash = require('connect-flash'),
+    routes = require('./routes/index.js');
 
 var app = express();
 
@@ -10,10 +12,12 @@ app.configure(function() {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
 
+    app.use(cors());
+    app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session( { secret: 'HomeSenseCode..shhh'} ));
-    app.use(cors());
+    app.use(flash());
     app.use(app.router);
     app.use(express.static(__dirname + '/public' ) );
 
@@ -24,8 +28,8 @@ app.configure(function() {
     });
 });
 
+routes(app);
+
 var server = app.listen(app.get('port'), function() {
     console.log('Express server listening on port ' + server.address().port);
 });
-
-module.exports = app;

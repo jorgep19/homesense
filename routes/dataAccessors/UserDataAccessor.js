@@ -19,12 +19,13 @@ var constructor = function() {
     };
 
     // insert a user row without user data
-    customerDataAccessorInstance.registerUser = function(data, response, sendResponse) {
+    customerDataAccessorInstance.registerUser = function(data, sendResponse) {
 
         var queryTemplate = "INSERT INTO customer " +
             "(cusFirst, cusLast, cusEmail, cusPassword) " +
             "VALUES " +
-            "('', '', $1, $2)";
+            "('', '', $1, $2)" +
+            "RETURNING cusid";
 
         var inserts = [data.email, data.password ];
 
@@ -32,8 +33,12 @@ var constructor = function() {
             client.query(queryTemplate, inserts, function(err, result) {
                 done();
 
-                sendResponse(err);
-            });
+                if(err) {
+                    sendResponse(err);
+                } else {
+                    sendResponse(err,result.rows[0].cusid);
+                }
+           });
         });
     };
 
