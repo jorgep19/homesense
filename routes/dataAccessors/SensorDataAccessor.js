@@ -14,38 +14,47 @@ var constructor = function() {
         });
     };
 
-    sensorDataAccessorInstance.insertDataRow = function(cusId, sensorData, res, i, l) {
-        var queryTemplate = "INSERT INTO sensor_data (cusID, sensID, sdataValue, sdatarecordeddate) VALUES (" +
-            "$1," +
-            "$2," +
-            "$3," +
-            "$4)";
-        var inserts = [ cusId, sensorData.sensorId, sensorData.value, sensorData.date ];
+    sensorDataAccessorInstance.recordSensorReadings = function(data, res) {
 
-        var isLastInsert = (l-1 === i);
+        console.log(data);
+        pg.connect(process.env.DATABASE_URL, function(err, client) {
+            var queryTemplate = "INSERT INTO sensor_data (cusID, sensID, sdataValue, sdatarecordeddate) VALUES (" +
+                "$1," +
+                "$2," +
+                "$3," +
+                "$4)" +
+                "RETURNING sdataid";
+            var inserts;
 
-        pg.connect( process.env.DATABASE_URL, function(err, client, done) {
-            client.query(queryTemplate, inserts, function(err, result) {
-                done();
 
-                console.log('saving:' + result);
+            var i, count = 0;
 
-                if(err) {
-                    res.send("Something went wrong")
-                }
+            for (i = 0; i < data.sensors.length; i++) {
+                inserts = [ data.userIdcusId, data.sensors[i].sensorId, data.sensors[i].value, data.sensors[i].date ];
 
-                if(isLastInsert) {
-                    res.send('Data saved successfully');
-                }
-            });
+                client.query(
+                    queryTemplate,
+                    inserts,
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+
+                            console.log('saved data with id: ' + result.rows[0].sdataid);
+                            res.write('row inserted with id: ' + result.rows[0].sdataid + '\n');
+                        }
+
+                        count++;
+                        console.log('count = ' + count);
+                        if (count == data.sensors.length) {
+                            client.end();
+                            res.send();
+                        }
+                    });
+            }
         });
     };
 
-    sensorDataAccessorInstance.recordSensorReadings = function(data, res, insertRow) {
-        for(var i = 0; i < data.sensors.length; i++) {
-            insertRow(data.userId, data.sensors[i], res, i, data.sensors.length);
-        }
-    };
 
     sensorDataAccessorInstance.getTemperatureData = function (sensorId, sendResponse){
         var queryTemplate = "SELECT sdatavalue, sdatarecordeddate FROM sensor S, sensor_data D " +

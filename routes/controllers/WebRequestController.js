@@ -66,6 +66,7 @@ var constructor = function() {
     // -----------------------------------------------------------------------------------------------------------------
 
     webRequestControllerInstance.loadDashboard = function(req, res){
+
         console.log('about to load the dashboard for:' + req.session.userId);
         res.render('dashboard');
     };
