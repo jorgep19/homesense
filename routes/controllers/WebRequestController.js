@@ -71,13 +71,20 @@ var constructor = function() {
     };
 
     // -----------------------------------------------------------------------------------------------------------------
+    // Settings page methods
+    // -----------------------------------------------------------------------------------------------------------------
+    webRequestControllerInstance.loadSettings = function(req, res) {
+        console.log('loading /settings page')
+        res.render('settings')
+    };
+
+    // -----------------------------------------------------------------------------------------------------------------
     // User Menu methods
     // -----------------------------------------------------------------------------------------------------------------
     webRequestControllerInstance.logout = function(req, res){
         req.session.userId = undefined;
         res.redirect('/');
     };
-
 
     return webRequestControllerInstance;
 };

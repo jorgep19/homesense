@@ -17,7 +17,7 @@ var constructor = function() {
     };
 
     sensorControllerInstance.recordSensorReadings = function(req, res) {
-        sensorDA.recordSensorReadings(data, res, sensorDA.insertDataRow);
+        sensorDA.recordSensorReadings(req.body, res, sensorDA.insertDataRow);
     };
 
     sensorControllerInstance.getTemperatureData = function(req, res){

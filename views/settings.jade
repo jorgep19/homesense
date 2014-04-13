@@ -1,0 +1,23 @@
+extends layout
+
+block mainContent 
+
+   div#changePass
+      p.tabTitle  Change Password
+
+      form(method="POST", action="#")
+
+         .form-group
+            label(for="id_currPass") Current Password: 
+            input#id_currPass(type="password", placeholder="password", name="currentPass", required="")
+
+         .form-group
+            label(for="id_newPass") New Password:
+            input#id_newPass(type="password", placeholder="password", name="newPass", required="")
+
+         .form-group
+            label(for="id_confirmNewPass") Confirm New Password:
+            input#id_confirmNewPass(type="password", placeholder="password", name="confirmNewPass", required="")
+
+         button(id="doChangePass") Submit
+      

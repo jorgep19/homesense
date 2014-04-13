@@ -7,3 +7,34 @@
     padding-top: 1em;
     border-top: 1px solid #e5e5e5;
 }
+
+/** == Settings page == */
+.tabTitle {
+   font-weight: bold;
+   font-size: 18px;
+}
+
+#changePass {
+   padding: 2em;
+   border: solid 2px #aaf;
+   border-radius: 5px;
+   width: 400px;
+}
+
+#changePass label {
+   padding: 3px;
+   width: 180px;
+   color: blue; 
+}
+
+#changePass button {
+   margin: 0 auto;
+   font-weight: bold;
+   border-radius: 4px;
+   text-align: center;
+   color: red;
+}
+
+#changePass button:hover {
+   background: #eee; 
+}
