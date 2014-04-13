@@ -64,6 +64,20 @@ var constructor = function() {
         });
     };
 
+    customerDataAccessorInstance.getDataSummaryForUser = function(userId, manageOutput) {
+
+        var queryTemplate = "SELECT Device.devDesc, Sensor.sensDesc, SensorData.sdataValue, Sensor.stypeID " +
+            "FROM Sensor NATURAL JOIN Device NATURAL JOIN Customer NATURAL JOIN SensorData " +
+            "WHERE Customer.cusId = $1 GROUP BY Device.devDesc, Sensor.sensDesc";
+        var inserts = [ userId ];
+
+        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+            client.query(queryTemplate, inserts, function(err, result) {
+                manageOutput(result.rows);
+            });
+        });
+    };
+
     return customerDataAccessorInstance;
 }
 

@@ -49,7 +49,7 @@ module.exports = function(app) {
     app.post('/api/pi/verify', piController.verifyPi);                                      // basic support
 
     // This URL creates a user account if possible
-    // Expects a JSON of this form: { userId: 1, sensors : [ { sensorId: 1, value: 12, date: '2014-04-07 17:50:52.9741'}, { sensorId: 1, value: 12, date: '2014-04-07 17:50:52.9741'} ] }
+    // Expects a JSON of this form: { "userId": 1, "sensors" : [ { "sensorId": 1, "value": 12, "date": "2014-04-07 17:50:52.9741"}, { "sensorId": 1, "value": 19, "date": "2014-04-07 17:50:52.9741"} ] }
     // Returns a log of the transaction that got executed
     app.post('/api/sensor/put/data', sensorController.recordSensorReadings);                // basic support
 
@@ -104,6 +104,6 @@ module.exports = function(app) {
     // Returns a JSON of this form hasErrors: false, messages: [0], data: [ { sdatavalue: "12", sdatarecordeddate: "2014-04-07T21:50:52.974Z" }, { sdatavalue: "21", sdatarecordeddate: "2014-04-07T21:50:52.974Z" } ] }
     app.get('/api/get/temperature/data/:sensorId', sensorController.getTemperatureData);
 
-   // TODO implement app.get('/api/customer/get/summary/data', );
+   app.get('/api/customer/get/summary/data', userController.getDataSummaryForUser);
 }
 

@@ -30,7 +30,7 @@ var constructor = function() {
             var i, count = 0;
 
             for (i = 0; i < data.sensors.length; i++) {
-                inserts = [ data.userIdcusId, data.sensors[i].sensorId, data.sensors[i].value, data.sensors[i].date ];
+                inserts = [ data.userId, data.sensors[i].sensorId, data.sensors[i].value, data.sensors[i].date ];
 
                 client.query(
                     queryTemplate,

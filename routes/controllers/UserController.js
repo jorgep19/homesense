@@ -102,7 +102,40 @@ var constructor = function() {
                 res.json( { hasErrors: false, piDesc: piDesc } );
             }
         })
-    }
+    };
+
+
+    var insertPiInCollection = function(collection, value) {
+
+        for(var i = 0 ; i < collection.length; i++) {
+            if( collection[i].desc === value.devDesc) {
+                collection[i].sensors.push( { desc: value.sensDesc, type: value.stypeID, data: value.sdataValue });
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    userControllerInstance.getDataSummaryForUser = function (req, res) {
+        var userId = 1;
+
+        userDA.getDataSummaryForUser(userId, function(rows){
+
+            var userData = { pis: [] };
+
+            // TODO refactor to something not as hacky
+            for(var i = 0 ; i < rows.length; i++) {
+
+                if( insertPiInCollection(userData.pis, rows[i]) ) {
+
+                    userData.pis.push( { desc: rows[i].devDesc, sensors: [ { desc: rows[i].sensDesc, type: rows[i].stypeID, data: rows[i].sdataValue } ] } )
+                }
+            }
+
+            res.send(userData);
+        });
+    };
 
     return userControllerInstance;
 };
