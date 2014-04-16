@@ -119,8 +119,10 @@ var constructor = function() {
                             response.messages.push('Something went wrong');
                             responseHandler(response);
                         } else {
-                            var dataToReturn = { piDesc: piInsertData.piDesc, piCode: piInsertData.piId, sensors: sensorInsertData };
-                            responseHandler(response, dataToReturn);
+                            response.hasErrors = false;
+                            response.messages.push('Pi added successfully');
+                            response.data = { piDesc: piInsertData.piDesc, piCode: piInsertData.piId, sensors: sensorInsertData };
+                            responseHandler(response);
                         }
                     });
                 }

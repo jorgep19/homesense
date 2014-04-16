@@ -34,7 +34,7 @@ module.exports = function(app) {
 
     // add pi
     app.get('/addpi', checkSessionBeforeExec(webRequestController.loadAppPi) );
-    // { sensorName: 'mah pi', sensors: [ { sensorDesc: 'mah sensor', sensorType: '1' } ] }
+    // { piName: 'mah pi', sensors: [ { sensorDesc: 'mah sensor', sensorType: '1' } ] }
     app.post('/addpi', checkSessionBeforeExec(webRequestController.addPiToLoggedInUser));
     app.get('/piadded', checkSessionBeforeExec(webRequestController.loadPiAdded));
 
@@ -92,12 +92,62 @@ module.exports = function(app) {
     app.post('/api/logout', checkSessionBeforeExec(userController.logout) );                // basic support
 
     // This URL ends the session of a user
-    // Expects nothing
-    // Returns a JSON of this form: { piDesc: 'piDescriptionString' }
+    // Expects a JSON of this form: { userId: 19 }
+    // Returns a JSON of this form: {
+    //    "hasErrors": false,
+    //        "messages": [ "Data successfully retrieved for user:1" ],
+    //        "data": [
+    //        {
+    //            "id": 1,
+    //            "desc": "Garage_PI",
+    //            "active": true,
+    //            "sensorsReadings": [
+    //                {
+    //                    "id": 1,
+    //                    "desc": "Garage_Temp",
+    //                    "type": "Temperature",
+    //                    "value": "20",
+    //                    "timestamp": "2014-04-11T21:50:52.974Z"
+    //                },
+    //                {
+    //                    "id": 40,
+    //                    "desc": "other sensor",
+    //                    "type": "Motion",
+    //                    "value": "12",
+    //                    "timestamp": "2014-04-16T18:57:02.759Z"
+    //                }
+    //            ]
+    //        },
+    //        {
+    //            "id": 1,
+    //            "desc": "Office pi",
+    //            "active": true,
+    //            "sensorsReadings": [
+    //                {
+    //                    "id": 40,
+    //                    "desc": "other sensor",
+    //                    "type": "Motion",
+    //                    "value": "12",
+    //                    "timestamp": "2014-04-16T18:57:02.759Z"
+    //                }
+    //            ]
+    //        }
+    //
+    //    ]
+    //}
     // in that JSON hasErrors is a boolean that states if there was an error
     // and messages is an array of string that has either error messages
     // or a message saying that the operation was successful
-    app.post('/api/customer/genpicode', checkSessionBeforeExec(userController.genPiCode) ); // basic support
+    app.post('/api/customer/get/summary/data', checkSessionBeforeExec(apiRequestController.getUserDataSummary) );       //basic support
+
+    // This URL ends the session of a user
+    // Expects nothing
+    // Returns a JSON of this form: { piName: 'mah pi', sensors: [ { sensorDesc: 'mah sensor', sensorType: '1' } ] }
+    // in that JSON hasErrors is a boolean that states if there was an error
+    // and messages is an array of string that has either error messages
+    // or a message saying that the operation was successful and data
+    // { piDesc: 'pi name', piCode: 70, sensors: [ { sensorDesc: 'sensorName', sensorType: 'Temperature' }, { sensorDesc: 'sensorName', sensorType: 'Motion' } ] }
+    app.post('/api/customer/genpicode', checkSessionBeforeExec(apiRequestController.registerPi) );
 
     // This URL ends the session of a user
     // Expects nothing
@@ -109,7 +159,5 @@ module.exports = function(app) {
     // Expect a number with the sensor code at the end of the url
     // Returns a JSON of this form hasErrors: false, messages: [0], data: [ { sdatavalue: "12", sdatarecordeddate: "2014-04-07T21:50:52.974Z" }, { sdatavalue: "21", sdatarecordeddate: "2014-04-07T21:50:52.974Z" } ] }
     app.get('/api/get/temperature/data/:sensorId', sensorController.getTemperatureData);
-
-    // TODO implement app.get('/api/customer/get/summary/data', userController.getDataSummaryForUser);
 }
 

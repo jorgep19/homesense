@@ -90,51 +90,30 @@ var constructor = function() {
         res.json( { hasErrors: false, messages: ['successfully logged out'] });
     };
 
-    // Adds an unverified pi to the user logged in.
-    // It return the pi code fo the user can go an input it in the pi
-    // through the command line interface.
-    userControllerInstance.genPiCode = function(req, res) {
 
-        userDA.registerPi(req.body, req.session.userCode, function(err, piDesc) {
-            if(err) {
-                res.json( { hasErrors: true, messages: "couldn't register PI" + piDesc } );
-            } else {
-                res.json( { hasErrors: false, piDesc: piDesc } );
-            }
-        })
-    };
-
-
-    var insertPiInCollection = function(collection, value) {
-
-        for(var i = 0 ; i < collection.length; i++) {
-            if( collection[i].desc === value.devDesc) {
-                collection[i].sensors.push( { desc: value.sensDesc, type: value.stypeID, data: value.sdataValue });
-                return false;
-            }
+    userControllerInstance.getDataSummaryForUser = function (userId, result, responseHandler) {
+        if(!userId)
+        {
+            result.hasErrors = true;
+            result.messages.push("userID is required");
         }
 
-        return true;
-    };
+        if(!result.hasErrors ) {
+            userDA.getDataSummaryForUser(userId, function(err, userData){
 
-    userControllerInstance.getDataSummaryForUser = function (req, res) {
-        var userId = 1;
-
-        userDA.getDataSummaryForUser(userId, function(rows){
-
-            var userData = { pis: [] };
-
-            // TODO refactor to something not as hacky
-            for(var i = 0 ; i < rows.length; i++) {
-
-                if( insertPiInCollection(userData.pis, rows[i]) ) {
-
-                    userData.pis.push( { desc: rows[i].devDesc, sensors: [ { desc: rows[i].sensDesc, type: rows[i].stypeID, data: rows[i].sdataValue } ] } )
+                if(err) {
+                    result.hasErrors = true;
+                    result.messages.push('Couldn\'t retrieve user data');
+                } else {
+                    result.data = userData;
+                    result.hasErrors = false;
+                    result.messages.push('Data successfully retrieved for user:' + userId);
                 }
-            }
-
-            res.send(userData);
-        });
+                responseHandler(result);
+            });
+        } else {
+            responseHandler(result);
+        }
     };
 
     return userControllerInstance;

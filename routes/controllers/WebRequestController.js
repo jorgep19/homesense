@@ -70,6 +70,11 @@ var constructor = function() {
         res.render('dashboard');
     };
 
+
+    webRequestControllerInstance.getUserDataSummary = function(req, res) {
+        // TODO IMPLEMENT
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // Add pi method
     // -----------------------------------------------------------------------------------------------------------------
@@ -81,18 +86,19 @@ var constructor = function() {
         var data  = req.body;
         data.userId = req.session.userId;
 
-        piController.registerPiForUser(data, function(responseResult, data) {
+        piController.registerPiForUser(data, function(responseResult) {
 
             if(responseResult.hasErrors) {
                 req.flash('signup-has-erros', 'there are errors');
                 req.flash('signup-messages', responseResult.messages);
                 res.redirect('/');
             } else {
-                req.flash('new-pi-data', data);
+                console.log(responseResult.data);
+                req.flash('new-pi-data', responseResult.data);
                 res.redirect( '/piadded');
             }
         });
-    }
+    };
 
     webRequestControllerInstance.loadPiAdded = function(req, res) {
         var data = req.flash('new-pi-data');

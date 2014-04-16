@@ -64,16 +64,66 @@ var constructor = function() {
         });
     };
 
+    // helper function for converting rows data to a json containing the data summary of the user sensors
+    var createUserDataTree = function(data) {
+        var userPis = [];
+        var foundPiAtIndex;
+        var foundPiInUserPis = false;
+        var j;
+        // map each row
+        for(var i = 0; i < data.length; i++) {
+
+            for(j = 0; j < userPis.length; j++) {
+                if (userPis[j].id === data[i].devid) {
+                    foundPiAtIndex = j;
+                    foundPiInUserPis = true;
+                    break;
+                }
+            }
+
+            // if pi found add the sensor to the pi
+            if(foundPiInUserPis) {
+                userPis[foundPiAtIndex].sensorsReadings.push({ id: data[i].sensid, desc: data[i].sensdesc, type: data[i].stypedesc,
+                    value: data[i].sdatavalue, timestamp: data[i].sdatarecordeddate  });
+                // otherwise create the pi with the sensor
+            } else {
+                userPis.push(
+                    {
+                        id: data[i].devid, desc: data[i].devdesc, active: data[i].devactivated,
+                        sensorsReadings: [ { id: data[i].sensid, desc: data[i].sensdesc, type: data[i].stypedesc,
+                            value: data[i].sdatavalue, timestamp: data[i].sdatarecordeddate  } ]
+                    } );
+            }
+
+            foundPiInUserPis = false;
+        }
+
+        return userPis;
+    }
+
     customerDataAccessorInstance.getDataSummaryForUser = function(userId, manageOutput) {
 
-        var queryTemplate = "SELECT Device.devDesc, Sensor.sensDesc, SensorData.sdataValue, Sensor.stypeID " +
-            "FROM Sensor NATURAL JOIN Device NATURAL JOIN Customer NATURAL JOIN SensorData " +
-            "WHERE Customer.cusId = $1 GROUP BY Device.devDesc, Sensor.sensDesc";
+        var queryTemplate = "SELECT D.devdesc, D.devactivated, S.sensdesc, data.sdatavalue, data.sdatarecordeddate , ST.stypedesc, D.devid, S.sensid " +
+                            "FROM (SELECT sdatavalue, sdatarecordeddate, sensid, " +
+                            "rank() OVER (PARTITION BY sensid ORDER BY sdatarecordeddate DESC) AS rank FROM sensor_data) AS data, " +
+                            "sensor S, device D, sensor_type ST " +
+                            "WHERE rank = 1 " +
+                            "AND S.sensid = data.sensid " +
+                            "AND D.devid = S.devid " +
+                            "AND ST.stypeid = S.stypeid " +
+                            "AND D.cusid = $1";
         var inserts = [ userId ];
 
         pg.connect(process.env.DATABASE_URL, function(err, client, done) {
             client.query(queryTemplate, inserts, function(err, result) {
-                manageOutput(result.rows);
+                done();
+
+                if(err) {
+                    manageOutput(err);
+                } else {
+                    var userData = createUserDataTree(result.rows);
+                    manageOutput(undefined, userData);
+                }
             });
         });
     };

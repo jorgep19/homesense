@@ -5,7 +5,7 @@ var constructor = function() {
 
     piDataAccessorIntance.verifyPi = function(piCode, sendResponse) {
         var queryTemplate = 'UPDATE device SET (devactivated) = (TRUE)' +
-            'WHERE devid = $1;';
+            'WHERE devid = $1';
         var inserts = [piCode];
 
         pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -24,7 +24,9 @@ var constructor = function() {
     };
 
     piDataAccessorIntance.getPiAndUserId = function(piId, sendData) {
-        var queryTemplate ='SELECT devid, cusid FROM device WHERE devId = $1';
+        var queryTemplate = 'SELECT D.devid, D.cusid, C.cusemail, P.phnumber '+
+                            'FROM device D, customer C, phone_number P ' +
+                            'WHERE D.devId = $1 AND C.cusid = D.cusid AND P.cusid = C.cusid';
         var inserts = [ piId ];
 
         pg.connect( process.env.DATABASE_URL, function(err, client, done) {
@@ -32,7 +34,13 @@ var constructor = function() {
                 done();
 
                 if(result.rowCount > 0) {
-                    sendData( err, { count: result.rowCount, piInfo: { piId: result.rows[0].devid, userId: result.rows[0].cusid } });
+                    sendData( err, { count: result.rowCount, piInfo: {
+                                                                        piId: result.rows[0].devid,
+                                                                        userId: result.rows[0].cusid,
+                                                                        userPhoneNumber: result.rows[0].phnumber,
+                                                                        userEmail: result.rows[0].cusemail
+
+                                                                      } } );
                 } else {
                     sendData(err, { count: result.rowCount } )
                 }
