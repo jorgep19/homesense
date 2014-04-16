@@ -28,7 +28,7 @@ function AddPiVM() {
     };
 
     $.ajax({
-        url: 'http://localhost:5000/api/sensor/get/types',
+        url: '/api/sensor/get/types',
         success: initSensorTypes
     });
 
@@ -78,7 +78,7 @@ function AddPiVM() {
         if( !self.hasErrors() ) {
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:5000/addpi',
+                url: '/addpi',
                 data: self.getData(),
                 success: piAddSuccessHandler
             });
