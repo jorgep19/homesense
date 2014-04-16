@@ -4,6 +4,7 @@ var constructor = function() {
 
     var piControllerInstance = {};
     var piDA = require('../dataAccessors/PiDataAccessor.js');
+    var sensorDA = require('../dataAccessors/SensorDataAccessor.js');
 
     // TODO implement
     piControllerInstance.verifyPi = function(req, res) {
@@ -71,6 +72,63 @@ var constructor = function() {
         } else {
             res.json(response);
         }
+    }
+
+
+    piControllerInstance.registerPiForUser = function(data, responseHandler){
+
+        var response = { hasErrors: false, messages: [] };
+
+        if(!data.userId) {
+            response.messages.push( 'There was problem with your session please log in again.' );
+            response.hasErrors = true;
+        }
+
+        if(!data.piName) {
+            response.messages.push( 'The Pi needs name' );
+            response.hasErrors = true;
+        }
+
+        for(var i = 0; i < data.sensors.length; i++) {
+            if ( !data.sensors[i].sensorDesc ) {
+                response.messages.push( 'All sensors must have a name' );
+                response.hasErrors = true;
+                break;
+            }
+
+            if ( !data.sensors[i].sensorType ) {
+                response.messages.push( 'All sensors must have a name' );
+                response.hasErrors = true;
+                break;
+            }
+        }
+
+        if(!response.hasErrors) {
+            piDA.registerPiForUser(data, function(err, piInsertData) {
+
+
+                if(err) {
+                    response.hasErrors = true;
+                    response.messages.push('Something went wrong');
+                    responseHandler(response);
+                } else {
+
+                    sensorDA.registerSensors(data.userId, piInsertData.piId, data.sensors, function(err, sensorInsertData) {
+                        if(err) {
+                            response.hasErrors = true;
+                            response.messages.push('Something went wrong');
+                            responseHandler(response);
+                        } else {
+                            var dataToReturn = { piDesc: piInsertData.piDesc, sensors: sensorInsertData };
+                            responseHandler(response, dataToReturn);
+                        }
+                    });
+                }
+            });
+        } else {
+            responseHandler(response);
+        }
+
     }
 
     return piControllerInstance;

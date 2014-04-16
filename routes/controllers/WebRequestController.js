@@ -64,12 +64,36 @@ var constructor = function() {
     // -----------------------------------------------------------------------------------------------------------------
     // Dashboard page methods
     // -----------------------------------------------------------------------------------------------------------------
-
     webRequestControllerInstance.loadDashboard = function(req, res){
 
         console.log('about to load the dashboard for:' + req.session.userId);
         res.render('dashboard');
     };
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Add pi method
+    // -----------------------------------------------------------------------------------------------------------------
+    webRequestControllerInstance.loadAppPi = function(req, res) {
+        res.render('addPi');
+    };
+
+    webRequestControllerInstance.addPiToLoggedInUser = function(req, res) {
+        var data  = req.body;
+        data.userId = req.session.userId;
+
+        piController.registerPiForUser(data, function(responseResult, data) {
+
+            if(responseResult.hasErrors) {
+                req.flash('signup-has-erros', 'there are errors');
+                req.flash('signup-messages', responseResult.messages);
+                res.redirect('/');
+            } else {
+                res.json(data);
+            }
+            // problem send to home page and be like oh fuck
+            // take to the code page and ask to verify
+        });
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
     // Settings page methods

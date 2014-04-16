@@ -1,0 +1,98 @@
+html
+head
+    meta(charset='utf-8')
+    title HomeSense
+script(src='../lib/js/jquery.min.js')
+    script(src='../lib/js/bootstrap.min.js')
+    link(rel='stylesheet', href='../lib/css/bootstrap.min.css')
+    link(rel='stylesheet', href='../lib/css/font-awesome.css')
+    link(rel='stylesheet', href='../styles/common.css')
+
+body
+main.container
+header.bottom-border
+a(href='../index.html')
+img(src='../imgs/bannerLogo.png')
+
+article.dropdown.navbar-right
+    button.dropdown-toggle.btn.btn-default(data-toggle='dropdown')
+        img(src='../imgs/defaultUserImg.png')
+        b.caret
+
+ul.dropdown-menu
+    li
+        a(href='dashboard.html') Dashboard
+      li
+        a(href='#') Settings
+      li
+        a(href='#') Sign out
+
+article.jumbotron.col-md-12
+
+pre.
+    \n 
+	
+	font(size='18')
+    b JOHN DOE
+	strong Average: 60 F
+	font(size='14') 62 F
+	strong Outside: 70 F
+  strong
+      center Temperature Reading
+	
+	
+	html(xmlns='http://www.w3.org/1999/xhtml')
+head
+  title Flot Line Graph
+  
+  style(type='text/css')
+    body { font-family: Verdana, Arial, sans-serif; font-size: 12px; }
+      #placeholder { width: 850px; height: 200px; }
+	
+	
+	script(type='text/javascript', language='javascript', src='jquery.min.js')
+  script(type='text/javascript', language='javascript', src='jquery.flot.js')
+    script(type='text/javascript', language='javascript', src='jquery.flot.axislabels.js')
+	
+	script
+		var JSONTemp = app.get('/api/get/temperature/data/:sensorId', sensorController.getTemperatureData);
+
+			
+			
+		
+		//alert(json.name);
+
+
+		var d1 = [[8, JSONTemp[0].sdatavalue], [10, JSONTemp[1].sdatavalue], [12, JSONTemp[2].sdatavalue], [14, JSONTemp[3].sdatavalue], [16, JSONTemp[4].sdatavalue],[18,json.temp6], [20,json.temp7]];
+
+
+		//var d1 = [[8, 55], [10, 57], [12, 63], [14, 68], [16, 70],[18,67], [20,60]];
+
+		var options = { 
+				xaxis: { ticks:[[8,'3/25/2014-11:00am'],[10,'3/25/2014-12:00pm'],[12,'3/25/2014-1:00pm'],[14,'3/25/2014-2:00pm'],[16,'3/25/2014-3:00pm'],[18,'3/25/2014-4:00pm'],[20,'3/25/2014-5:00pm']]}
+				};
+		 
+		$(document).ready(function () {
+			$.plot($("#placeholder"), [d1], {
+				xaxis: {
+				//mode: "time",
+				//tickSize: [1,"Time"],
+				//timeMarks: ["3","3","3","3","3","3","3"],
+				axisLabel: 'Time (24 hr Clock)',
+				axisLabelUseCanvas: true,
+				axisLabelFontSizePixels: 12,
+				axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+				axisLabelPadding: 5
+			},
+			yaxis: {
+				axisLabel: 'Temp (F)',
+				axisLabelUseCanvas: true,
+				axisLabelFontSizePixels: 12,
+				axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+				axisLabelPadding: 3
+			}
+		});
+		});
+
+
+	

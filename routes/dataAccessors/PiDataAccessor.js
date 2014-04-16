@@ -25,7 +25,7 @@ var constructor = function() {
 
     piDataAccessorIntance.getPiAndUserId = function(piId, sendData) {
         var queryTemplate ='SELECT devid, cusid FROM device WHERE devId = $1';
-        var inserts = [ piId ]
+        var inserts = [ piId ];
 
         pg.connect( process.env.DATABASE_URL, function(err, client, done) {
             client.query(queryTemplate, inserts,function(err, result) {
@@ -37,6 +37,24 @@ var constructor = function() {
                     sendData(err, { count: result.rowCount } )
                 }
 
+            });
+        });
+    };
+
+
+    piDataAccessorIntance.registerPiForUser = function(data, sendData){
+        var queryTemplate = "INSERT INTO device (cusID, devdesc) VALUES ($1, $2) RETURNING devdesc, devid";
+        var inserts = [data.userId, data.piName];
+
+        pg.connect( process.env.DATABASE_URL, function(err, client, done) {
+            client.query(queryTemplate, inserts,function(err, result) {
+                done();
+
+                if(err) {
+                    sendData(err)
+                } else {
+                    sendData( err, { piDesc: result.rows[0].devdesc, piId: result.rows[0].devid} );
+                }
             });
         });
     };

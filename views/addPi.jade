@@ -1,0 +1,55 @@
+include userMenuMixin
+extends layout
+
+block head
+    link(rel='stylesheet', href='/lib/css/font-awesome.css')
+
+block headerContent
+    // logged in user menu
+    +userMenuMixin(null)
+
+block mainContent
+    article.jumbotron.col-md-12
+        .form
+            h2.form-signin-heading Register your new Pi
+                i.fa.fa-smile-o
+
+            .col-md-12
+                label(for='piDescInput') Sensor Description:
+                input.form-control(id='piDescInput', type='text', placeholder='pi name', data-bind='value: name')
+
+            header
+                h3 Sensors
+                div
+                    .btn.btn-default(data-bind='click: addSensor')
+                        i.fa.fa-plus-circle
+                br
+
+            table.col-md-12
+                tbody(data-bind='foreach: sensors')
+                    tr
+                        td.col-md-5
+                            label(for='sensorDescInput') Sensor Description:
+                            input.form-control(id='sensorDescInput', text='text', placeholder='sensor name', data-bind='value: name')
+                        td.col-md-5
+                            label(for='sensorTypeDropdown') Sensor Type:
+                            select.form-control(id='sensorTypeDropdown', data-bind="options: $root.sensorTypes, value: type, optionsText: 'desc'")
+                                option(value='1') uno
+                                option(value='2') dos
+                        td.col-md-2
+                            .btn.btn-default(data-bind='click: $root.removeSensor')
+                                i.fa.fa-minus-circle
+
+
+        table
+            tbody(data-bind='foreach: errors')
+                tr
+                    td
+                        span(data-bind='text: message').alert.alert-danger.col-md-12
+
+        footer.col-md-12
+            br
+            button.btn.btn-lg.btn-primary.btn-block(data-bind='click: submitPi') Add pi!
+
+block scripts
+    script(src='/clientLogic/addPiVM.js')

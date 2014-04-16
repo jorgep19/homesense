@@ -16,7 +16,6 @@ var constructor = function() {
 
     sensorDataAccessorInstance.recordSensorReadings = function(data, res) {
 
-        console.log(data);
         pg.connect(process.env.DATABASE_URL, function(err, client) {
             var queryTemplate = "INSERT INTO sensor_data (cusID, sensID, sdataValue, sdatarecordeddate) VALUES (" +
                 "$1," +
@@ -55,6 +54,43 @@ var constructor = function() {
         });
     };
 
+    sensorDataAccessorInstance.registerSensors = function(userId, piId, sensors, sendData) {
+
+        pg.connect(process.env.DATABASE_URL, function(err, client) {
+            var queryTemplate = "INSERT INTO sensor( cusid, devid, stypeid,  sensdesc) VALUES (" +
+                "$1," +
+                "$2," +
+                "$3," +
+                "$4)" +
+                "RETURNING sensdesc, stypeid";
+            var inserts;
+            var sensorDataInserted = [];
+
+            var i, count = 0;
+
+            for (i = 0; i < sensors.length; i++) {
+                inserts = [ userId, piId, sensors[i].sensorType, sensors[i].sensorDesc ];
+
+                client.query(
+                    queryTemplate,
+                    inserts,
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            sensorDataInserted.push( { sensorDesc: result.rows[0].sensdesc, sensorType: result.rows[0].stypeid } );
+                        }
+
+                        count++;
+                        console.log('count = ' + count);
+                        if (count == sensors.length) {
+                            client.end();
+                            sendData(undefined, sensorDataInserted);
+                        }
+                    });
+            }
+        });
+    };
 
     sensorDataAccessorInstance.getTemperatureData = function (sensorId, sendResponse){
         var queryTemplate = "SELECT sdatavalue, sdatarecordeddate FROM sensor S, sensor_data D " +

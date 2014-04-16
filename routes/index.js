@@ -31,9 +31,15 @@ module.exports = function(app) {
 
     // dashboard
     app.get('/dashboard', checkSessionBeforeExec(webRequestController.loadDashboard) );
+
+    // add pi
+    app.get('/addpi', checkSessionBeforeExec(webRequestController.loadAppPi) );
+    // { sensorName: 'mah pi', sensors: [ { sensorDesc: 'mah sensor', sensorType: '1' } ] }
+    app.post('/addpi', checkSessionBeforeExec(webRequestController.addPiToLoggedInUser))
+
+
     // logout
     app.get('/logout', checkSessionBeforeExec(webRequestController.logout));
-
 
    // settings
    app.get('/settings', webRequestController.loadSettings);
@@ -96,7 +102,7 @@ module.exports = function(app) {
     // This URL ends the session of a user
     // Expects nothing
     // Returns a JSON of this form [ { "stypeid": 1, "stypedesc": "Temperature" }, { "stypeid": 2, "stypedesc": "Motion" } ]
-    app.get('/api/sensor/get/types', sensorController.getSensorTypes);
+    app.get('/api/sensor/get/types', sensorController.getSensorTypes);                      // fully supported
 
 
     // This URL return the collection of all the data for an specific sensor
@@ -104,6 +110,6 @@ module.exports = function(app) {
     // Returns a JSON of this form hasErrors: false, messages: [0], data: [ { sdatavalue: "12", sdatarecordeddate: "2014-04-07T21:50:52.974Z" }, { sdatavalue: "21", sdatarecordeddate: "2014-04-07T21:50:52.974Z" } ] }
     app.get('/api/get/temperature/data/:sensorId', sensorController.getTemperatureData);
 
-   app.get('/api/customer/get/summary/data', userController.getDataSummaryForUser);
+    // TODO implement app.get('/api/customer/get/summary/data', userController.getDataSummaryForUser);
 }
 

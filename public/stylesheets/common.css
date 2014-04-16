@@ -8,6 +8,10 @@
     border-top: 1px solid #e5e5e5;
 }
 
+.bottom-margin {
+    margin-bottom: 1em;
+}
+
 /** == Settings page == */
 .tabTitle {
    font-weight: bold;
