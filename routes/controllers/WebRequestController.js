@@ -88,11 +88,15 @@ var constructor = function() {
                 req.flash('signup-messages', responseResult.messages);
                 res.redirect('/');
             } else {
-                res.json(data);
+                req.flash('new-pi-data', data);
+                res.redirect( '/piadded');
             }
-            // problem send to home page and be like oh fuck
-            // take to the code page and ask to verify
         });
+    }
+
+    webRequestControllerInstance.loadPiAdded = function(req, res) {
+        var data = req.flash('new-pi-data');
+        res.render('piAdded', { data: data[0] } );
     }
 
     // -----------------------------------------------------------------------------------------------------------------

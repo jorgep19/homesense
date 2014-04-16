@@ -119,7 +119,7 @@ var constructor = function() {
                             response.messages.push('Something went wrong');
                             responseHandler(response);
                         } else {
-                            var dataToReturn = { piDesc: piInsertData.piDesc, sensors: sensorInsertData };
+                            var dataToReturn = { piDesc: piInsertData.piDesc, piCode: piInsertData.piId, sensors: sensorInsertData };
                             responseHandler(response, dataToReturn);
                         }
                     });

@@ -71,13 +71,16 @@ function AddPiVM() {
             }
         }
 
-        if( !self.hasErrors() ) {
-            console.log(self.getData());
+        var piAddSuccessHandler = function (data) {
+            document.write(data);
+        };
 
+        if( !self.hasErrors() ) {
             $.ajax({
                 type: "POST",
                 url: 'http://localhost:5000/addpi',
-                data: self.getData()
+                data: self.getData(),
+                success: piAddSuccessHandler
             });
 
         } else {

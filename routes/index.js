@@ -35,8 +35,8 @@ module.exports = function(app) {
     // add pi
     app.get('/addpi', checkSessionBeforeExec(webRequestController.loadAppPi) );
     // { sensorName: 'mah pi', sensors: [ { sensorDesc: 'mah sensor', sensorType: '1' } ] }
-    app.post('/addpi', checkSessionBeforeExec(webRequestController.addPiToLoggedInUser))
-
+    app.post('/addpi', checkSessionBeforeExec(webRequestController.addPiToLoggedInUser));
+    app.get('/piadded', checkSessionBeforeExec(webRequestController.loadPiAdded));
 
     // logout
     app.get('/logout', checkSessionBeforeExec(webRequestController.logout));

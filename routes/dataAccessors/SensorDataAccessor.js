@@ -62,7 +62,7 @@ var constructor = function() {
                 "$2," +
                 "$3," +
                 "$4)" +
-                "RETURNING sensdesc, stypeid";
+                "RETURNING sensdesc, (SELECT stypedesc FROM sensor_type WHERE stypeid = $3)";
             var inserts;
             var sensorDataInserted = [];
 
@@ -78,7 +78,7 @@ var constructor = function() {
                         if (err) {
                             console.log(err);
                         } else {
-                            sensorDataInserted.push( { sensorDesc: result.rows[0].sensdesc, sensorType: result.rows[0].stypeid } );
+                            sensorDataInserted.push( { sensorDesc: result.rows[0].sensdesc, sensorType: result.rows[0].stypedesc } );
                         }
 
                         count++;
