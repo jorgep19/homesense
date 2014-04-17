@@ -10,14 +10,14 @@ block mainContent
         .alert.alert-success
             span
                 i #{data.piDesc}
-                | was succesfully added to your account!
+                | &nbsp; was succesfully added to your account!
         .alert.alert-warning
             span
-                | Please verify
+                | Please verify &nbsp;
                 i #{data.piDesc}
-                | to start logging data from you by entering this code:
+                | &nbsp; to start logging data from you by entering this code: &nbsp;
                 b #{data.piCode}
-                | on the pi console app.
+                | &nbsp; on the pi console app.
 
         h2 Your pi has this sensors:
         ul
@@ -25,7 +25,7 @@ block mainContent
                 li
                     span
                         i #{s.sensorDesc}
-                        | which it a #{s.sensorType} sensor
+                        | &nbsp; which it a #{s.sensorType} sensor
         a(href='/dashboard')
             button.btn.btn-default
                 label Done
