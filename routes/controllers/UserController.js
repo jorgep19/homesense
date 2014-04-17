@@ -25,22 +25,36 @@ var constructor = function() {
             result.messages.push("Password and retype don't match");
         }
 
+        if(data.phone && data.phone.length === 0){
+            result.hasErrors = true;
+            result.messages.push("Phone is required");
+        }
+
         if(!result.hasErrors) {
             userDA.registerUser(data, function(err, userId) {
 
-                if(err && err.code == 23505)
-                {
+                if(err && err.code == 23505) {
                     result.hasErrors = true;
                     result.messages.push("An account for " + data.email + " already exists");
+                    responseHandler(result);
                 } else if(err) {
                     result.hasErrors = true;
                     result.messages.push("something went wrong");
+                    responseHandler(result);
                 } else {
-                    result.messages.push("Account for " + data.email + "successfully created");
-                    result.userId = userId;
-                }
+                    userDA.savePhone(userId, data.phone, function(err, insertedUserIdForPhone) {
 
-                responseHandler(result);
+                        if(err) {
+                            result.hasErrors = true;
+                            result.messages.push("Couldn\'t create account");
+                        } else {
+                            result.hasErrors = false;
+                            result.messages.push("Account for " + data.email + "successfully created");
+                            result.userId = insertedUserIdForPhone;
+                        }
+                        responseHandler(result);
+                    });
+                }
             });
         } else {
             responseHandler(result);

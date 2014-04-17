@@ -11,9 +11,10 @@ block mainContent
             form.form-signin(role='form', method='POST', action='/signup')
                 h2.form-signin-heading Create an account
                 input.form-control(type='email', placeholder='Email address', required='', name='email')
+                input.form-control(type='phone', placeholder='phone number', required='', name='phone')
                 input.form-control(type='password', placeholder='Password', required='', name='password')
                 // TODO add client side logic validation for the password re-type
-                input.form-control(type='password', placeholder='re-type Password', name='passwordRetype')
+                input.form-control(type='password', placeholder='re-type Password', required="", name='passwordRetype')
                 button.btn.btn-lg.btn-primary.btn-block(type="submit") Create account
 
             if data.hasErrors

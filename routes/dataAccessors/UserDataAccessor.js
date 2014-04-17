@@ -42,6 +42,26 @@ var constructor = function() {
         });
     };
 
+    customerDataAccessorInstance.savePhone = function(userId, phoneNumber, sendResponse) {
+
+        var queryTemplate = "INSERT INTO phone_number(cusid, pcid, phtid, phnumber) VALUES ($1,1,1, $2) RETURNING cusid";
+
+        var inserts = [userId, phoneNumber ];
+
+        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+            client.query(queryTemplate, inserts, function(err, result) {
+                done();
+
+                if(err) {
+                    sendResponse(err);
+                } else {
+                    sendResponse(err,result.rows[0].cusid);
+                }
+            });
+        });
+    };
+
+
     // Inserst a Pi for a user account
     customerDataAccessorInstance.registerPi = function(data, userCode, sendResponse){
         var queryTemplate = 'INSERT INTO device (cusId, devDesc) ' +
