@@ -15,7 +15,7 @@ block mainContent
                 i.fa.fa-smile-o
 
             .col-md-12
-                label(for='piDescInput') Sensor Description:
+                label(for='piDescInput') Pi name:
                 input.form-control(id='piDescInput', type='text', placeholder='pi name', data-bind='value: name')
 
             header
@@ -29,7 +29,7 @@ block mainContent
                 tbody(data-bind='foreach: sensors')
                     tr
                         td.col-md-5
-                            label(for='sensorDescInput') Sensor Description:
+                            label(for='sensorDescInput') Sensor name:
                             input.form-control(id='sensorDescInput', text='text', placeholder='sensor name', data-bind='value: name')
                         td.col-md-5
                             label(for='sensorTypeDropdown') Sensor Type:

@@ -7,17 +7,30 @@ block headerContent
 
 block mainContent
     article.jumbotron.col-md-12
+
         // user sensors data
         section.col-md-10
-            a(href='TemperatureDetail.html')
-                button.btn.btn-default
-                    h3
-                        label.label.label-default
-                    span SensorName
-                    span 72
-                    h6
-                        | Outside Temp:
-                    span 80
+            if userData.data
+                each pi in userData.data
+                    .col-md-12
+                        h3 #{pi.desc}
+                        if pi.active
+                            p Is active
+                        else
+                            p Is not active
+                        .row
+                        each reading in pi.sensorsReadings
+                            if reading.type === 'Temperature'
+                                .col-md-4
+                                    -var link = '/sensor/' + reading.type + '/' + reading.id
+                                    a(href="#{link}")
+                                        button.btn.btn-default
+                                            h3
+                                                label.label.label-default #{reading.desc}
+                                            p #{reading.value}  &deg;F
+                                            p #{reading.timestamp.toString().substring(4,25)}
+            else
+                h1 Add a pi to start recording data
 
         section.col-md-2
             section.col-md-12
@@ -37,17 +50,20 @@ block mainContent
                 label.col-md-12.label.label-default Pi
                 div
                     .checkbox
-                        input(type='checkbox')
-                        | My Pi
+                    if userData.data
+                        each pi in userData.data
+                            .checkbox
+                                label #{pi.desc}
+                                input(type='checkbox')
 
                 // sensor types filters
                 label.col-md-12.label.label-default Sensor Type
                 div
                     .checkbox
-                        label Temperature
+                        label Tempture
                         input(type='checkbox')
                     .checkbox
-                        label Humidity
+                        label Humiy
                         input(type='checkbox')
                     .checkbox
                         label Motion

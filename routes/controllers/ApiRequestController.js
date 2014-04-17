@@ -36,7 +36,7 @@ var constructor = function() {
 
         userController.getDataSummaryForUser(req.body.userId, result, function(responseResult) {
             res.json(responseResult);
-        })
+        });
     }
 
     return ApiRequestControllerInstance;

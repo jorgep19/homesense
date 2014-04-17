@@ -65,15 +65,19 @@ var constructor = function() {
     // Dashboard page methods
     // -----------------------------------------------------------------------------------------------------------------
     webRequestControllerInstance.loadDashboard = function(req, res){
+        var result = { hasErrors: false, messages: [] };
 
-        console.log('about to load the dashboard for:' + req.session.userId);
-        res.render('dashboard');
+        userController.getDataSummaryForUser(req.session.userId, result, function(responseResult) {
+            res.render('dashboard', { userData: responseResult });
+        });
     };
 
-
-    webRequestControllerInstance.getUserDataSummary = function(req, res) {
-        // TODO IMPLEMENT
-    }
+    // -----------------------------------------------------------------------------------------------------------------
+    // Temperature Sensor Detail Page
+    // -----------------------------------------------------------------------------------------------------------------
+    webRequestControllerInstance.loadTemperatureDetail = function(req, res){
+        res.render('newTemp');
+    };
 
     // -----------------------------------------------------------------------------------------------------------------
     // Add pi method

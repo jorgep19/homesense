@@ -38,6 +38,9 @@ module.exports = function(app) {
     app.post('/addpi', checkSessionBeforeExec(webRequestController.addPiToLoggedInUser));
     app.get('/piadded', checkSessionBeforeExec(webRequestController.loadPiAdded));
 
+    // temperature detail
+    app.get('/sensor/Temperature/:sensorId', checkSessionBeforeExec(webRequestController.loadTemperatureDetail));
+
     // logout
     app.get('/logout', checkSessionBeforeExec(webRequestController.logout));
 
