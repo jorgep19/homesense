@@ -10,7 +10,9 @@ $(function() {
 
     function getRandomData() {
 
-        var res = [];
+
+        if (data.length > 0)
+            data = data.slice(1);
 
         function parseData(json){
             for (var i = 0; i < json.data.length; i++) {
@@ -21,8 +23,9 @@ $(function() {
                 var min = parseInt(json.data[i].sdatarecordeddate.substring(14,16));
                 var second = parseInt(json.data[i].sdatarecordeddate.substring(17,19));
 
-                res.push([Date.UTC(year, month, day, hour, min, second), json.data[i].sdatavalue]);
+                data.push([Date.UTC(year, month, day, hour, min, second), json.data[i].sdatavalue]);
             }
+
         }
 
         var sensor = document.URL.split('/')[5];
@@ -31,6 +34,11 @@ $(function() {
             method: "GET",
             success: parseData
         });
+
+        var res = [];
+        for (var i = 0; i < data.length; ++i) {
+            res.push(data[i])
+        }
 
         return res;
     }
