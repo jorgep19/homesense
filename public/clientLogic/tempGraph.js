@@ -48,6 +48,7 @@ $(function() {
     var updateInterval = 30;
 
     var plot = $.plot("#placeholder", [ getRandomData() ], {
+        color: 1,
         series: {
             shadowSize: 0	// Drawing is faster without shadows
         },
@@ -65,7 +66,7 @@ $(function() {
 
         plot.setData([getRandomData()]);
 
-        // plot.setupGrid()
+        plot.setupGrid()
 
         plot.draw();
         setTimeout(update, updateInterval);
