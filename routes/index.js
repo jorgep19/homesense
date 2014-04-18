@@ -92,7 +92,7 @@ module.exports = function(app) {
     // in that JSON hasErrors is a boolean that states if there was an error
     // and messages is an array of string that has either error messages
     // or a message saying that the operation was successful
-    app.post('/api/logout', checkSessionBeforeExec(userController.logout) );                // basic support
+    app.post('/api/logout', userController.logout );                // basic support
 
     // This URL ends the session of a user
     // Expects a JSON of this form: { userId: 19 }
@@ -141,7 +141,7 @@ module.exports = function(app) {
     // in that JSON hasErrors is a boolean that states if there was an error
     // and messages is an array of string that has either error messages
     // or a message saying that the operation was successful
-    app.post('/api/customer/get/summary/data', checkSessionBeforeExec(apiRequestController.getUserDataSummary) );       //basic support
+    app.post('/api/customer/get/summary/data', apiRequestController.getUserDataSummary );       //basic support
 
     // This URL ends the session of a user
     // Expects nothing
@@ -150,7 +150,7 @@ module.exports = function(app) {
     // and messages is an array of string that has either error messages
     // or a message saying that the operation was successful and data
     // { piDesc: 'pi name', piCode: 70, sensors: [ { sensorDesc: 'sensorName', sensorType: 'Temperature' }, { sensorDesc: 'sensorName', sensorType: 'Motion' } ] }
-    app.post('/api/customer/genpicode', checkSessionBeforeExec(apiRequestController.registerPi) );
+    app.post('/api/customer/genpicode', apiRequestController.registerPi );
 
     // This URL ends the session of a user
     // Expects nothing

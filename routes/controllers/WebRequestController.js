@@ -76,7 +76,7 @@ var constructor = function() {
     // Temperature Sensor Detail Page
     // -----------------------------------------------------------------------------------------------------------------
     webRequestControllerInstance.loadTemperatureDetail = function(req, res){
-        res.render('newTemp');
+        res.render('DetailedTemp');
     };
 
     // -----------------------------------------------------------------------------------------------------------------

@@ -10,9 +10,9 @@ block mainContent
 
         // user sensors data
         section.col-md-10
-            if userData.data
+            if userData.data.length !== 0
                 each pi in userData.data
-                    .col-md-12
+                    .col-md-12.panel.panel-default(data-pi="#{pi.id}")
                         h3 #{pi.desc}
                         if pi.active
                             p Is active
@@ -21,7 +21,7 @@ block mainContent
                         .row
                         each reading in pi.sensorsReadings
                             if reading.type === 'Temperature'
-                                .col-md-4
+                                .col-md-4(data-sensor="#{reading.id}", data-sensor-type="#{reading.type}")
                                     -var link = '/sensor/' + reading.type + '/' + reading.id
                                     a(href="#{link}")
                                         button.btn.btn-default
@@ -30,7 +30,7 @@ block mainContent
                                             p #{reading.value}  &deg;F
                                             p #{reading.timestamp.toString().substring(4,25)}
             else
-                h1 Add a pi to start recording data
+                h2 No data has been recorded yet... maybe you want to add a pi
 
         section.col-md-2
             section.col-md-12
@@ -52,7 +52,7 @@ block mainContent
                     .checkbox
                     if userData.data
                         each pi in userData.data
-                            .checkbox
+                            .checkbox(id="#{pi.id}")
                                 label #{pi.desc}
                                 input(type='checkbox')
 
@@ -61,7 +61,7 @@ block mainContent
                 div
                     .checkbox
                         label Tempture
-                        input(type='checkbox')
+                        input(type='checkbox', id="Temperature")
                     .checkbox
                         label Humiy
                         input(type='checkbox')

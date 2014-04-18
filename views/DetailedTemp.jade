@@ -1,8 +1,14 @@
-html
-  body
-    pre.
-      \n      
-                                         
-    script(src='../lib/js/HomeSenseChart.js', type='text/javascript')
-    #chartdiv(style='width: 80%; height: 340px;', align='middle')  
+include userMenuMixin
+extends layout
+block headerContent
+    // logged in user menu
+    +userMenuMixin(null)
+block mainContent
+    article.jumbotron.col-md-12
 
+        .demo-container
+            #placeholder.demo-placeholder
+
+block scripts
+    script(language="javascript", type="text/javascript", src="/lib/js/jquery.flot.js")
+    script(language="javascript", type="text/javascript", src="/clientLogic/tempGraph.js")
