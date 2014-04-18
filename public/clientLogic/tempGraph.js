@@ -65,7 +65,7 @@ $(function() {
 
         plot.setData([getRandomData()]);
 
-        plot.setupGrid()
+        // plot.setupGrid()
 
         plot.draw();
         setTimeout(update, updateInterval);
